@@ -1,8 +1,8 @@
-package java_courses.repo;
+package uat.services;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public interface ResultSetHandler<T> {
+public interface IResultSetHandler<T> {
     T handle(ResultSet rSet) throws SQLException;
 }

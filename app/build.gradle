@@ -20,7 +20,7 @@ java {
 }
 
 application {
-    mainClass = 'java_courses.App'
+    mainClass = 'uat.App'
 }
 
 tasks.named('test') {

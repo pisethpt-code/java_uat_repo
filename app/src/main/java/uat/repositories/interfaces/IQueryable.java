@@ -1,5 +1,7 @@
-package java_courses.repo;
+package uat.repositories.interfaces;
+
 import java.util.*;
+import uat.services.IResultSetHandler;
 import java.sql.SQLException;
 
 public interface IQueryable extends AutoCloseable {
@@ -10,7 +12,7 @@ public interface IQueryable extends AutoCloseable {
 
     <T> List<T> query(String sql, Class<T> clazz, Object... params) throws Exception;
 
-    <T> T executeQuery(String sql, ResultSetHandler<T> handler, Object... params) throws Exception;
+    <T> T executeQuery(String sql, IResultSetHandler<T> handler, Object... params) throws Exception;
 
     int executeUpdate(String sql, Object... params) throws Exception;
 
@@ -18,7 +20,7 @@ public interface IQueryable extends AutoCloseable {
 
     int executeProcedure(String sql, Object... params) throws Exception;
 
-    <T> T executeProcedureCursor(String sql, ResultSetHandler<T> handler, Object... params) throws Exception;
+    <T> T executeProcedureCursor(String sql, IResultSetHandler<T> handler, Object... params) throws Exception;
 
     <T> T executeScalar(String sql, Class<T> type) throws Exception;
 

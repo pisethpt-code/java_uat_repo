@@ -1,4 +1,4 @@
-package java_courses.model;
+package uat.models;
 
 import java.math.BigDecimal;
 

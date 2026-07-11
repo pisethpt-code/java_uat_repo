@@ -20,6 +20,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = 'Java_Courses'
+rootProject.name = 'uat'
 
 include 'app'

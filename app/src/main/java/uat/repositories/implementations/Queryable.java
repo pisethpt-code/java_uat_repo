@@ -1,12 +1,15 @@
-package java_courses.repo;
+package uat.repositories.implementations;
 
 import java.sql.*;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Service;
-import java_courses.util.JdbcUtility;
+
 import oracle.jdbc.OracleTypes;
+import uat.repositories.interfaces.IQueryable;
+import uat.services.IResultSetHandler;
+import uat.utils.JdbcUtility;
 
 @Service
 public class Queryable implements IQueryable {
@@ -22,8 +25,10 @@ public class Queryable implements IQueryable {
     }
 
     /**    (non-Javadoc)
-     * 
-     * @see java_courses.repo.IQueryable#query(java.lang.String, java.lang.Class)
+     * <br><br>
+     * <b>Description: </b> Executes a query and maps the results to a list of objects of the specified class.
+     * <br><br>
+     * @see uat.repositories.interfaces.IQueryable#query(java.lang.String, java.lang.Class)
      */
     @Override
     public <T> List<T> query(String sql, Class<T> clazz) throws Exception {
@@ -69,8 +74,10 @@ public class Queryable implements IQueryable {
     }
 
     /**    (non-Javadoc)
-     * 
-     * @see java_courses.repo.IQueryable#query(java.lang.String, java.lang.Class, int)
+     * <br><br>
+     * <b>Description: </b> Executes a query with an OUT parameter and maps the results to a list of objects of the specified class.
+     * <br><br>
+     * @see uat.repositories.interfaces.IQueryable#query(java.lang.String, java.lang.Class, int)
      */
     @Override
     public <T> List<T> query(String sql, Class<T> clazz, int outParameter) throws Exception {
@@ -121,8 +128,10 @@ public class Queryable implements IQueryable {
     }
 
     /**    (non-Javadoc)
-     * 
-     * @see java_courses.repo.IQueryable#query(java.lang.String, java.lang.Class, java.lang.Object[])
+     * <br><br>
+     * <b>Description: </b> Executes a query with parameters and maps the results to a list of objects of the specified class.
+     * <br><br>
+     * @see uat.repositories.interfaces.IQueryable#query(java.lang.String, java.lang.Class, java.lang.Object[])
      */
     @Override
     public <T> List<T> query(String sql, Class<T> clazz, Object... params) throws Exception {
@@ -178,13 +187,15 @@ public class Queryable implements IQueryable {
     }
 
     /**    (non-Javadoc)
-     * 
-     * @see java_courses.repo.IQueryable#executeQuery(java.lang.String, java_courses.repo.ResultSetHandler, java.lang.Object[])
+    * <br><br>
+     * <b>Description: </b> Executes a query with parameters and maps the results using a ResultSetHandler.
+     * <br><br>
+     * @see uat.repositories.interfaces.IQueryable#executeQuery(java.lang.String, uat.services.IResultSetHandler, java.lang.Object[])
      */
     @Override
     public <T> T executeQuery(
             String sql,
-            ResultSetHandler<T> handler,
+            IResultSetHandler<T> handler,
             Object... params) throws Exception {
 
         try (PreparedStatement stmt =
@@ -201,8 +212,10 @@ public class Queryable implements IQueryable {
     }
 
     /**    (non-Javadoc)
-     * 
-     * @see java_courses.repo.IQueryable#executeUpdate(java.lang.String, java.lang.Object[])
+     * <br><br>
+     * <b>Description: </b> Executes an update statement with parameters.
+     * <br><br> 
+     * @see uat.repositories.interfaces.IQueryable#executeUpdate(java.lang.String, java.lang.Object[])
      */
     @Override
     public int executeUpdate(
@@ -221,8 +234,10 @@ public class Queryable implements IQueryable {
     }
 
     /**    (non-Javadoc)
-     * 
-     * @see java_courses.repo.IQueryable#executeUpdate(java.lang.String, java.lang.Class)
+     * <br><br>
+     * <b>Description: </b> Executes an update statement using the fields of the specified class as parameters.
+     * <br><br> 
+     * @see uat.repositories.interfaces.IQueryable#executeUpdate(java.lang.String, java.lang.Class)
      */
     @Override
     public <T> int executeUpdate(String sql, Class<T> clazz) throws Exception {
@@ -243,16 +258,14 @@ public class Queryable implements IQueryable {
     }
 
     /**    (non-Javadoc)
-     * 
-     * @see java_courses.repo.IQueryable#executeProcedure(java.lang.String, java.lang.Object[])
+     * <br><br>
+     * <b>Description: </b> Executes a stored procedure with parameters.
+     * <br><br> 
+     * @see uat.repositories.interfaces.IQueryable#executeProcedure(java.lang.String, java.lang.Object[])
      */
     @Override
-    public int executeProcedure(
-            String sql,
-            Object... params) throws Exception {
-
-        try (CallableStatement stmt =
-                     getConnection().prepareCall(sql)) {
+    public int executeProcedure(String sql, Object... params) throws Exception {
+        try (CallableStatement stmt = getConnection().prepareCall(sql)) {
 
             for (int i = 0; i < params.length; i++) {
                 stmt.setObject(i + 1, params[i]);
@@ -263,16 +276,15 @@ public class Queryable implements IQueryable {
             return 1;
         }
     }
+    
     /**    (non-Javadoc)
-     * 
-     * @see java_courses.repo.IQueryable#executeProcedureCursor(java.lang.String, java_courses.repo.ResultSetHandler, java.lang.Object[])
+     * <br><br>
+     * <b>Description: </b> Executes a stored procedure that returns a cursor and processes the results using a ResultSetHandler.
+     * <br><br> 
+     * @see uat.repositories.interfaces.IQueryable#executeProcedureCursor(java.lang.String, uat.services.IResultSetHandler, java.lang.Object[])
      */
     @Override
-    public <T> T executeProcedureCursor(
-            String sql,
-            ResultSetHandler<T> handler,
-            Object... params) throws Exception {
-
+    public <T> T executeProcedureCursor(String sql, IResultSetHandler<T> handler, Object... params) throws Exception {
         try (CallableStatement stmt =
                      getConnection().prepareCall(sql)) {
 
@@ -293,15 +305,14 @@ public class Queryable implements IQueryable {
     }
 
     /**    (non-Javadoc)
-     * 
-     * @see java_courses.repo.IQueryable#executeScalar(java.lang.String, java.lang.Class, java.lang.Object[])
+     * <br><br>
+     * <b>Description: </b> Executes a query that returns a single value and maps it to the specified type.
+     * <br><br> 
+     * @see uat.repositories.interfaces.IQueryable#executeScalar(java.lang.String, java.lang.Class, java.lang.Object[])
      */
     @Override
     @SuppressWarnings("unchecked")
-    public <T> T executeScalar(
-            String sql,
-            Class<T> type) throws Exception {
-
+    public <T> T executeScalar(String sql, Class<T> type) throws Exception {
         try (PreparedStatement stmt =
                      getConnection().prepareStatement(sql)) {
 
@@ -317,16 +328,14 @@ public class Queryable implements IQueryable {
     }
 
     /**    (non-Javadoc)
-     * 
-     * @see java_courses.repo.IQueryable#executeScalar(java.lang.String, java.lang.Class, java.lang.Object[])
+     * <br><br>
+     * <b>Description: </b> Executes a query that returns a single value with parameters and maps it to the specified type.
+     * <br><br> 
+     * @see uat.repositories.interfaces.IQueryable#executeScalar(java.lang.String, java.lang.Class, java.lang.Object[])
      */
     @Override
     @SuppressWarnings("unchecked")
-    public <T> T executeScalar(
-            String sql,
-            Class<T> type,
-            Object... params) throws Exception {
-
+    public <T> T executeScalar(String sql, Class<T> type, Object... params) throws Exception {
         try (PreparedStatement stmt =
                      getConnection().prepareStatement(sql)) {
 
@@ -346,14 +355,13 @@ public class Queryable implements IQueryable {
     }
 
     /**    (non-Javadoc)
-     * 
-     * @see java_courses.repo.IQueryable#executeBatch(java.lang.String, java.lang.Object[][])
+     * <br><br>
+     * <b>Description: </b> Executes a batch of update statements with parameters.
+     * <br><br> 
+     * @see uat.repositories.interfaces.IQueryable#executeBatch(java.lang.String, java.lang.Object[][])
      */
     @Override
-    public int[] executeBatch(
-            String sql,
-            Object[][] batchParams) throws Exception {
-
+    public int[] executeBatch(String sql, Object[][] batchParams) throws Exception {
         try (PreparedStatement stmt =
                      getConnection().prepareStatement(sql)) {
 
@@ -369,9 +377,12 @@ public class Queryable implements IQueryable {
             return stmt.executeBatch();
         }
     }
+   
     /**    (non-Javadoc)
-     * 
-     * @see java_courses.repo.IQueryable#beginTransaction()
+     * <br><br>
+     * <b>Description: </b> Begins a transaction by setting auto-commit to false.
+     * <br><br> 
+     * @see uat.repositories.interfaces.IQueryable#beginTransaction()
      */
     @Override
     public void beginTransaction() throws SQLException {
@@ -379,46 +390,44 @@ public class Queryable implements IQueryable {
     }
 
     /**    (non-Javadoc)
-     * 
-     * @see java_courses.repo.IQueryable#commit()
+     * <br><br>
+     * <b>Description: </b> Commits the current transaction and sets auto-commit back to true.
+     * <br><br> 
+     * @see uat.repositories.interfaces.IQueryable#commit()
      */
     @Override
     public void commit() throws SQLException {
-
         getConnection().commit();
-
         getConnection().setAutoCommit(true);
     }
 
     /**    (non-Javadoc)
-     * 
-     * @see java_courses.repo.IQueryable#rollback()
+     * <br><br>
+     * <b>Description: </b> Rolls back the current transaction and sets auto-commit back to true.
+     * <br><br> 
+     * @see uat.repositories.interfaces.IQueryable#rollback()
      */
     @Override
     public void rollback() {
-
         try {
-
             getConnection().rollback();
-
             getConnection().setAutoCommit(true);
-
         } catch (SQLException ignored) {
         }
     }
+    
     /**    (non-Javadoc)
-     * 
-     * @see java_courses.repo.IQueryable#close()
+     * <br><br>
+     * <b>Description: </b> Closes the database connection.
+     * <br><br> 
+     * @see uat.repositories.interfaces.IQueryable#close()
      */
     @Override
     public void close() {
-
         try {
-
             if (connection != null) {
                 connection.close();
             }
-
         } catch (SQLException ignored) {
         }
     }
