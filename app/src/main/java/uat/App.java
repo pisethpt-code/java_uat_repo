@@ -3,121 +3,13 @@
  */
 package uat;
 
-import java.math.BigDecimal;
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.util.List;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import oracle.jdbc.OracleTypes;
-import uat.controllers.XwyyOrderController;
-import uat.models.XwyyOrder;
-import uat.repositories.implementations.Queryable;
-import uat.repositories.interfaces.IQueryable;
-import uat.utils.JdbcUtility;
-
+@SpringBootApplication
 public class App {
-    public String getGreeting() {
-        return "Hello World!";
-    }
-
-    public void getAllRecords() throws Exception {
-
-        String sql = "{call MESUAT.SP_XWYYORDER_GETALLRECORDS(?)}";
-
-        try (
-                Connection conn = JdbcUtility.getConnection();
-                CallableStatement stmt = conn.prepareCall(sql)) {
-
-            // Register OUT SYS_REFCURSOR
-            stmt.registerOutParameter(
-                    1,
-                    OracleTypes.CURSOR);
-
-            // Execute procedure
-            stmt.execute();
-
-            // Get cursor result
-            ResultSet rs = (ResultSet) stmt.getObject(1);
-
-            while (rs.next()) {
-
-                System.out.println(
-                        "Id: " + rs.getInt("Id"));
-
-                System.out.println(
-                        "LineNo: " + rs.getString("LineNo"));
-
-                System.out.println(
-                        "RecipeName: " + rs.getString("RecipeName"));
-
-                System.out.println("----------------");
-            }
-
-            rs.close();
-        }
-    }
 
     public static void main(String[] args) {
-
-        System.out.println(new App().getGreeting());
-
-        // App app = new App();
-        // try {
-        // app.getAllRecords();
-        // } catch (Exception e) {
-        // // TODO Auto-generated catch block
-        // System.out.println(e.getMessage());
-        // e.printStackTrace();
-        // }
-
-        XwyyOrderController controller = new XwyyOrderController(new uat.repositories.implementations.XwyyOrderRepository());
-        try {
-            controller.getAllRecords();
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        // try (IQueryable db = new Queryable()) {
-
-        //     // // execute create record
-        //     // XwyyOrder newXwyyOrder = new XwyyOrder();
-        //     // newXwyyOrder.setLineNo("LINE05");
-        //     // newXwyyOrder.setRecipeName("Recipe D");
-        //     // newXwyyOrder.setRecipeType("TYPE1");
-        //     // newXwyyOrder.setRecipeVersion("V1.0");
-        //     // newXwyyOrder.setMSetCount(new BigDecimal("2500"));
-        //     // newXwyyOrder.setMLotNo("LOT002");
-        //     // newXwyyOrder.setIsRead(new BigDecimal("0"));
-        //     // newXwyyOrder.setMesOrder("MES0002");
-        //     // newXwyyOrder.setSimpleCode("MES0002");
-
-        //     // String createXwyyyOrderRecordSql = "{call MESUAT.SP_XWYYORDER_CreateRecord(?, ?, ?, ?, ?, ?, ?, ?, ?)}";
-        //     // db.executeUpdate(createXwyyyOrderRecordSql, 
-        //     //     newXwyyOrder.getLineNo(),
-        //     //     newXwyyOrder.getRecipeName(),
-        //     //     newXwyyOrder.getRecipeType(),
-        //     //     newXwyyOrder.getRecipeVersion(),
-        //     //     newXwyyOrder.getMSetCount(),
-        //     //     newXwyyOrder.getMLotNo(),
-        //     //     newXwyyOrder.getIsRead(),
-        //     //     newXwyyOrder.getMesOrder(),
-        //     //     newXwyyOrder.getSimpleCode()
-        //     // );
-
-        //     // execute retrieve dataset
-        //     String sql = "{call MESUAT.SP_XWYYORDER_GETALLRECORDS(?)}";
-        //     List<XwyyOrder> orders = db.query(sql, XwyyOrder.class, OracleTypes.CURSOR);
-        //     for (XwyyOrder order : orders) {
-        //         System.out.println(order.getId());
-        //         System.out.println(order.getLineNo());
-        //         System.out.println(order.getRecipeName());
-        //     }
-        // } catch (Exception e) {
-        //     // TODO: handle exception
-        //     System.out.println(e.getMessage());
-        // }
-    
+        SpringApplication.run(App.class, args);
     }
 }

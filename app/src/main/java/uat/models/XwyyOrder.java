@@ -4,95 +4,103 @@ import java.math.BigDecimal;
 
 public class XwyyOrder {
 
-    private BigDecimal Id;
-    private String LineNo;
-    private String RecipeName;
-    private String RecipeType;
-    private String RecipeVersion;
-    private BigDecimal MSetCount;
-    private String MLotNo;
-    private BigDecimal IsRead;
-    private String MesOrder;
-    private String SimpleCode;    
+    private BigDecimal id;
+    private String lineNo;
+    private String recipeName;
+    private String recipeType;
+    private String recipeVersion;
+    private BigDecimal mSetCount;
+    private String mLotNo;
+    private String changeTime;
+    private BigDecimal isRead;
+    private String mesOrder;
+    private String simpleCode;
+
+    public String getChangeTime() {
+        return changeTime;
+    }
+
+    public void setChangeTime(String changeTime) {
+        this.changeTime = changeTime;
+    }
 
     public String getRecipeType() {
-        return RecipeType;
+        return recipeType;
     }
 
     public void setRecipeType(String recipeType) {
-        RecipeType = recipeType;
+        this.recipeType = recipeType;
     }
 
     public String getRecipeVersion() {
-        return RecipeVersion;
+        return recipeVersion;
     }
 
     public void setRecipeVersion(String recipeVersion) {
-        RecipeVersion = recipeVersion;
+        this.recipeVersion = recipeVersion;
     }
 
-    public BigDecimal getMSetCount() {
-        return MSetCount;
+    public BigDecimal getmSetCount() {
+        return mSetCount;
     }
 
-    public void setMSetCount(BigDecimal mSetCount) {
-        MSetCount = mSetCount;
+    public void setmSetCount(BigDecimal mSetCount) {
+        this.mSetCount = mSetCount;
     }
 
-    public String getMLotNo() {
-        return MLotNo;
+    public String getmLotNo() {
+        return mLotNo;
     }
 
-    public void setMLotNo(String mLotNo) {
-        MLotNo = mLotNo;
+    public void setmLotNo(String mLotNo) {
+        this.mLotNo = mLotNo;
     }
 
     public BigDecimal getIsRead() {
-        return IsRead;
+        return isRead;
     }
 
     public void setIsRead(BigDecimal isRead) {
-        IsRead = isRead;
+        this.isRead = isRead;
     }
 
     public String getMesOrder() {
-        return MesOrder;
+        return mesOrder;
     }
 
     public void setMesOrder(String mesOrder) {
-        MesOrder = mesOrder;
+        this.mesOrder = mesOrder;
     }
 
     public String getSimpleCode() {
-        return SimpleCode;
+        return simpleCode;
     }
 
     public void setSimpleCode(String simpleCode) {
-        SimpleCode = simpleCode;
+        this.simpleCode = simpleCode;
     }
 
     public BigDecimal getId() {
-        return Id;
+        return id;
     }
 
     public void setId(BigDecimal id) {
-        Id = id;
+        this.id = id;
     }
 
     public String getLineNo() {
-        return LineNo;
+        return lineNo;
     }
 
     public void setLineNo(String lineNo) {
-        LineNo = lineNo;
+        this.lineNo = lineNo;
     }
 
     public void setRecipeName(String recipeName){
-        RecipeName = recipeName;
+        this.recipeName = recipeName;
     }
 
     public String getRecipeName() {
-        return RecipeName;
+        return recipeName;
     }
-
 }

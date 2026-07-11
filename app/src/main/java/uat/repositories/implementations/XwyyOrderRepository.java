@@ -1,6 +1,11 @@
 package uat.repositories.implementations;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
+
 import uat.repositories.interfaces.IQueryable;
 import uat.models.XwyyOrder;
 import uat.repositories.interfaces.IXwyyOrderRepository;
@@ -16,19 +21,32 @@ public class XwyyOrderRepository implements IXwyyOrderRepository {
      * @see uat.repositories.interfaces.IXwyyOrderRepository#getAllRecords()
      */
     @Override
-    public void getAllRecords() throws Exception {
+    public List<XwyyOrder> getAllRecords() throws Exception {
         // TODO Auto-generated method stub
         try (IQueryable queryable = new Queryable()) {
+            List<XwyyOrder> records = new ArrayList<>();
+            
             String sql = "{call MESUAT.SP_XWYYORDER_GETALLRECORDS(?)}";
-            queryable.executeProcedureCursor(sql, rs -> {
+             queryable.executeProcedureCursor(sql, rs -> {
                 while (rs.next()) {
-                    System.out.println("Id: " + rs.getInt("Id"));
-                    System.out.println("LineNo: " + rs.getString("LineNo"));
-                    System.out.println("RecipeName: " + rs.getString("RecipeName"));
-                    System.out.println("----------------");
+                    XwyyOrder order = new XwyyOrder();
+                    order.setId(new BigDecimal(rs.getInt("Id")));
+                    order.setLineNo(rs.getString("LineNo"));
+                    order.setRecipeName(rs.getString("RecipeName"));
+                    order.setRecipeType(rs.getString("RecipeType"));
+                    order.setRecipeVersion(rs.getString("RecipeVersion"));
+                    order.setmSetCount(rs.getBigDecimal("MSetCount"));
+                    order.setmLotNo(rs.getString("MLotNo"));
+                    order.setChangeTime(rs.getString("ChangeTime"));
+                    order.setIsRead(rs.getBigDecimal("IsRead"));
+                    order.setMesOrder(rs.getString("MesOrder"));
+                    order.setSimpleCode(rs.getString("SimpleCode"));
+                    records.add(order);
                 }
                 return null;
             });
+
+            return records;
         } catch (Exception e) {
             throw new Exception("Error retrieving all records from XwyyOrder table", e);
         }
@@ -42,18 +60,29 @@ public class XwyyOrderRepository implements IXwyyOrderRepository {
      * @see uat.repositories.interfaces.IXwyyOrderRepository#getRecordById(int)
      */
     @Override
-    public void getRecordById(int id) throws Exception {
+    public XwyyOrder getRecordById(int id) throws Exception {
         // TODO Auto-generated method stub
         try (IQueryable queryable = new Queryable()) {
+            XwyyOrder order = new XwyyOrder();
             String sql = "{call MESUAT.SP_XWYYORDER_GETRECORDBYID(?, ?)}";
             queryable.executeProcedureCursor(sql, rs -> {
                 if (rs.next()) {
-                    System.out.println("Id: " + rs.getInt("Id"));
-                    System.out.println("LineNo: " + rs.getString("LineNo"));
-                    System.out.println("RecipeName: " + rs.getString("RecipeName"));
+                    order.setId(new BigDecimal(rs.getInt("Id")));
+                    order.setLineNo(rs.getString("LineNo"));
+                    order.setRecipeName(rs.getString("RecipeName"));
+                    order.setRecipeType(rs.getString("RecipeType"));
+                    order.setRecipeVersion(rs.getString("RecipeVersion"));
+                    order.setmSetCount(rs.getBigDecimal("MSetCount"));
+                    order.setmLotNo(rs.getString("MLotNo"));
+                    order.setChangeTime(rs.getString("ChangeTime"));
+                    order.setIsRead(rs.getBigDecimal("IsRead"));
+                    order.setMesOrder(rs.getString("MesOrder"));
+                    order.setSimpleCode(rs.getString("SimpleCode"));
                 }
                 return null;
             }, id);
+
+            return order;
         } catch (Exception e) {
             throw new Exception("Error retrieving record from XwyyOrder table", e);
         }
@@ -76,8 +105,8 @@ public class XwyyOrderRepository implements IXwyyOrderRepository {
                     model.getRecipeName(),
                     model.getRecipeType(),
                     model.getRecipeVersion(),
-                    model.getMSetCount(),
-                    model.getMLotNo(),
+                    model.getmSetCount(),
+                    model.getmLotNo(),
                     model.getIsRead(),
                     model.getMesOrder(),
                     model.getSimpleCode());
@@ -99,15 +128,15 @@ public class XwyyOrderRepository implements IXwyyOrderRepository {
     public int updateRecord(XwyyOrder model, int id) throws Exception {
         // TODO Auto-generated method stub
         try (IQueryable queryable = new Queryable()) {
-            String sql = "{call MESUAT.SP_XWYYORDER_UpdateRecord(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+            String sql = "{call MESUAT.SP_XWYYORDER_UPDATERECORD(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
             int result = queryable.executeProcedure(
                     sql,
                     model.getLineNo(),
                     model.getRecipeName(),
                     model.getRecipeType(),
                     model.getRecipeVersion(),
-                    model.getMSetCount(),
-                    model.getMLotNo(),
+                    model.getmSetCount(),
+                    model.getmLotNo(),
                     model.getIsRead(),
                     model.getMesOrder(),
                     model.getSimpleCode(),
