@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import oracle.jdbc.OracleTypes;
 import uat.repositories.interfaces.IQueryable;
 import uat.models.XwyyOrder;
 import uat.repositories.interfaces.IXwyyOrderRepository;
@@ -151,6 +152,10 @@ public class XwyyOrderRepository implements IXwyyOrderRepository {
     /**    (non-Javadoc)
      * <br><br>
      * <b>Description: </b> This method is used to delete a specific record from the XwyyOrder table based on the provided ID.
+     * @param id The ID of the record to be deleted. <i>Note: The ID should be a positive integer.</i>
+     * <br><br>
+     * @return An integer indicating the result of the delete operation. Returns a positive value if successful, otherwise returns -1.
+     * @throws Exception If an error occurs during the delete operation.
      * <br><br>
      * @see uat.repositories.interfaces.IXwyyOrderRepository#deleteRecord(int)
      */
@@ -158,8 +163,18 @@ public class XwyyOrderRepository implements IXwyyOrderRepository {
     public int deleteRecord(int id) throws Exception {
         // TODO Auto-generated method stub
         try (IQueryable queryable = new Queryable()) {
-            String sql = "{call MESUAT.SP_XWYYORDER_DeleteRecord(?)}";
-            int result = queryable.executeProcedure(sql, id);
+            String sql = "{call MESUAT.SP_XWYYORDER_DELETERECORD(?, ?)}";
+            int result = queryable.executeProcedureCursor(sql, (rs) -> {
+                // Handle the result set if needed
+                if (rs.next()) {
+                    rs.getString("Status"); // Assuming the stored procedure returns a status
+                    rs.getString("Message"); // Assuming the stored procedure returns a response message
+
+                    System.out.println(rs.getString("Status"));
+                    System.out.println(rs.getString("Message"));
+                }
+                return 1; // Placeholder return value
+            }, id);
             return result > 0 ? result : -1; // Return the result if successful, otherwise return -1
         } catch (Exception e) {
             throw new Exception("Error deleting record from XwyyOrder table", e);

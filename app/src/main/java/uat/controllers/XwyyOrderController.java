@@ -3,12 +3,7 @@ package uat.controllers;
 import java.util.List;
 
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import uat.models.XwyyOrder;
 import uat.repositories.interfaces.IXwyyOrderRepository;
@@ -70,6 +65,15 @@ public class XwyyOrderController {
         return response;
     }
 
+    /**
+     * <br><br>
+     * <b>Description: </b> This method is used to create a new record in
+     * the XwyyOrder table based on the provided model data.
+     * <br><br>
+     * @param model
+     * @return
+     * @throws Exception
+     */
     @PostMapping(
         value = "/createRecord",
         consumes = MediaType.APPLICATION_XML_VALUE,
@@ -91,7 +95,16 @@ public class XwyyOrderController {
         return response;
     }
 
-    @PostMapping(
+    /**
+     * <br><br>
+     * <b>Description: </b> This method is used to upddate an existing record in the XwyyOrder table based on the provided model data and ID.
+     * <br><br>
+     * @param model
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    @PutMapping(
         value = "/updateRecord",
         consumes = MediaType.APPLICATION_XML_VALUE,
         produces = MediaType.APPLICATION_XML_VALUE
@@ -109,6 +122,35 @@ public class XwyyOrderController {
             response = new Response(false, "Error updating record in XwyyOrder table: " + e.getMessage(), null);
             throw new Exception("Error updating record in XwyyOrder table (method: updateRecord)", e);
         }
+        return response;
+    }
+
+    /**
+     * <br><br>
+     * <b>Description: </b> This method is used to delete a specific record from the XwyyOrder table based on the provided ID.
+     * <br><br>
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    @DeleteMapping(
+        value ="/deleteRecord",
+        consumes = MediaType.APPLICATION_XML_VALUE,
+        produces = MediaType.APPLICATION_XML_VALUE
+    )
+    public Response deleteRecord(@RequestParam int id) throws Exception {
+        Response response = new Response();
+        try {
+           if (id <= 0) {
+                response = new Response(false, "Invalid record ID.", null);
+                return response;
+            }
+            int result = repository.deleteRecord(id);
+            response = new Response(true, "Commit transaction successfully.", result);
+        } catch (Exception e) {
+            response = new Response(false, "Error deleting record from XwyyOrder table: " + e.getMessage(), null);
+            throw new Exception("Error deleting record from XwyyOrder table (method: deleteRecord, ID: " + id + ")", e);
+        } 
         return response;
     }
 }

@@ -193,10 +193,7 @@ public class Queryable implements IQueryable {
      * @see uat.repositories.interfaces.IQueryable#executeQuery(java.lang.String, uat.services.IResultSetHandler, java.lang.Object[])
      */
     @Override
-    public <T> T executeQuery(
-            String sql,
-            IResultSetHandler<T> handler,
-            Object... params) throws Exception {
+    public <T> T executeQuery(String sql, IResultSetHandler<T> handler, Object... params) throws Exception {
 
         try (PreparedStatement stmt =
                      getConnection().prepareStatement(sql)) {
@@ -218,9 +215,7 @@ public class Queryable implements IQueryable {
      * @see uat.repositories.interfaces.IQueryable#executeUpdate(java.lang.String, java.lang.Object[])
      */
     @Override
-    public int executeUpdate(
-            String sql,
-            Object... params) throws Exception {
+    public int executeUpdate(String sql, Object... params) throws Exception {
 
         try (PreparedStatement stmt =
                      getConnection().prepareStatement(sql)) {
