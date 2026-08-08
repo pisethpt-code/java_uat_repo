@@ -35,8 +35,9 @@ public class XwyyOrderController {
             List<XwyyOrder> data = repository.getAllRecords();
             response = new Response(true, "Commit transaction successfully.", data);
         }catch (Exception e) {
-            response = new Response(false, "Error retrieving all records from XwyyOrder table: " + e.getMessage(), null);
-            throw new Exception("Error retrieving all records from XwyyOrder table (method: getAllRecords)", e);
+            String errorMessage = "Error retrieving all records from XwyyOrder table (method: getAllRecords) ";
+            response = new Response(false, errorMessage + e.getMessage(), null);
+            throw new Exception(errorMessage, e);
         }
         return response;
     }
@@ -55,12 +56,17 @@ public class XwyyOrderController {
     public Response getRecordById(@RequestParam int id) throws Exception {
         Response response = new Response();
         try {
+            if (id <= 0) {
+                response = new Response(false, "Invalid record ID.", null);
+                return response;
+            }
             XwyyOrder data = new XwyyOrder();
             data = repository.getRecordById(id);
-            response = new Response(true, "Commit transaction successfully.", data);
+            response = new Response(true, "Commit transaction successfully.", data != null ? data : null);
         } catch (Exception e) {
-            response = new Response(false, "Error retrieving record from XwyyOrder table: " + e.getMessage(), null);
-            throw new Exception("Error retrieving record from XwyyOrder table (method: getRecordById, ID: " + id + ")", e);
+            String errorMessage = "Error retrieving record from XwyyOrder table (method: getRecordById) ID: " + id;
+            response = new Response(false, errorMessage + ": " + e.getMessage(), null);
+            throw new Exception(errorMessage, e);
         }
         return response;
     }
@@ -89,8 +95,9 @@ public class XwyyOrderController {
             int result = repository.createRecord(model);
             response = new Response(true, "Commit transaction successfully.", result);
         } catch (Exception e) {
-            response = new Response(false, "Error creating record in XwyyOrder table: " + e.getMessage(), null);
-            throw new Exception("Error creating record in XwyyOrder table (method: createRecord)", e);
+            String errorMessage = "Error creating record in XwyyOrder table (method: createRecord) ";
+            response = new Response(false, errorMessage + e.getMessage(), null);
+            throw new Exception(errorMessage, e);
         }
         return response;
     }
@@ -119,8 +126,9 @@ public class XwyyOrderController {
             int result = repository.updateRecord(model, id);
             response = new Response(true, "Commit transaction successfully.", result);
         } catch (Exception e) {
-            response = new Response(false, "Error updating record in XwyyOrder table: " + e.getMessage(), null);
-            throw new Exception("Error updating record in XwyyOrder table (method: updateRecord)", e);
+            String errorMessage = "Error updating record in XwyyOrder table (method: updateRecord) ID: " + id;
+            response = new Response(false, errorMessage + e.getMessage(), null);
+            throw new Exception(errorMessage, e);
         }
         return response;
     }
@@ -148,8 +156,9 @@ public class XwyyOrderController {
             int result = repository.deleteRecord(id);
             response = new Response(true, "Commit transaction successfully.", result);
         } catch (Exception e) {
-            response = new Response(false, "Error deleting record from XwyyOrder table: " + e.getMessage(), null);
-            throw new Exception("Error deleting record from XwyyOrder table (method: deleteRecord, ID: " + id + ")", e);
+            String errorMessage = "Error deleting record from XwyyOrder table (method: deleteRecord) ID: " + id;
+            response = new Response(false, errorMessage + e.getMessage(), null);
+            throw new Exception(errorMessage, e);
         } 
         return response;
     }

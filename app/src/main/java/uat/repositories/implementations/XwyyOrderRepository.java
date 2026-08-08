@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import oracle.jdbc.OracleTypes;
 import uat.repositories.interfaces.IQueryable;
 import uat.models.XwyyOrder;
 import uat.repositories.interfaces.IXwyyOrderRepository;

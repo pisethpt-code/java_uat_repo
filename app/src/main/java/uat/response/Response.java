@@ -18,6 +18,7 @@ public class Response {
     private Object data;
 
     public Response() {
+        super();
     }
 
     /**
