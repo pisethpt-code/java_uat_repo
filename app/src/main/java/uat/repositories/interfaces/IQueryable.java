@@ -95,6 +95,15 @@ public interface IQueryable extends AutoCloseable {
      */
     int[] executeBatch(String sql, Object[][] batchParams) throws Exception;
 
+    // create a method to create SQLXML object
+    /**    (non-Javadoc)
+     * <br><br>
+     * <b>Description: </b> Creates a SQLXML object for use in executing SQL statements.
+     * <br><br> 
+     * @see uat.repositories.interfaces.IQueryable#createSQLXML()
+     */
+    java.sql.SQLXML createSQLXML() throws SQLException;
+
     /**    (non-Javadoc)
      * <br><br>
      * <b>Description: </b> Begins a transaction by setting auto-commit to false.

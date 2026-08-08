@@ -426,4 +426,10 @@ public class Queryable implements IQueryable {
         } catch (SQLException ignored) {
         }
     }
+
+    @Override
+    public SQLXML createSQLXML() throws SQLException {
+        // TODO Auto-generated method stub
+        return getConnection().createSQLXML();
+    }
 }

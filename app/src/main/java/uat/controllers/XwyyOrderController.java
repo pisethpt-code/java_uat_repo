@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import uat.filters.XwyyOrderFilter;
 import uat.models.XwyyOrder;
 import uat.repositories.interfaces.IXwyyOrderRepository;
 import uat.response.Response;
@@ -158,8 +159,34 @@ public class XwyyOrderController {
         } catch (Exception e) {
             String errorMessage = "Error deleting record from XwyyOrder table (method: deleteRecord) ID: " + id;
             response = new Response(false, errorMessage + e.getMessage(), null);
-            throw new Exception(errorMessage, e);
+            // throw new Exception(errorMessage, e);
         } 
+        return response;
+    }
+
+    /**
+     * <br><br>
+     * <b>Description: </b> This method is used to retrieve records from the XwyyOrder table based on the provided filter criteria.
+     * <br><br>
+     * @param filter The filter criteria for retrieving records.
+     * @return A Response object containing the filtered records or an error message.
+     * @throws Exception If an error occurs during the retrieval process.
+     */
+    @PostMapping(
+        value = "/getRecordsByFilter",
+        consumes = MediaType.APPLICATION_XML_VALUE,
+        produces = MediaType.APPLICATION_XML_VALUE
+    )
+    public Response getRecordsByFilter(@RequestBody XwyyOrderFilter filter) throws Exception {
+        Response response = new Response();
+        try {
+            List<XwyyOrder> data = repository.getRecordsByFilter(filter);
+            response = new Response(true, "Commit transaction successfully.", data);
+        } catch (Exception e) {
+            String errorMessage = "Error retrieving records from XwyyOrder table (method: getRecordsByFilter) ";
+            response = new Response(false, errorMessage + e.getMessage(), null);
+            throw new Exception(errorMessage, e);
+        }
         return response;
     }
 }

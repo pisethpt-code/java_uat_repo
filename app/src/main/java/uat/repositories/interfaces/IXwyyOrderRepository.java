@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import uat.filters.XwyyOrderFilter;
 import uat.models.XwyyOrder;
 
 @Repository
@@ -50,4 +51,18 @@ public interface IXwyyOrderRepository {
      * @see uat.repositories.interfaces.IXwyyOrderRepository#deleteRecord(int)
      */
     public int deleteRecord(int id) throws Exception;
+    /**
+     *   (non-Javadoc)
+     * <br><br>
+     * <b>Description: </b> This method is used to filter records from the X
+     * wyyOrder table based on the provided filter criteria.
+     * <br><br>
+     * @see uat.repositories.interfaces.IXwyyOrderRepository#filterRecords(uat
+     * .filters.XwyyOrderFilter)
+     * <br><br>
+     * @param filter The filter criteria encapsulated in an XwyyOrderFilter object.
+     * @return A list of XwyyOrder records that match the filter criteria.
+     * @throws Exception
+     */
+    public List<XwyyOrder> getRecordsByFilter(XwyyOrderFilter filter) throws Exception;
 }

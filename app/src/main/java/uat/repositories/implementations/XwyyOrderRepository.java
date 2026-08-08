@@ -1,12 +1,14 @@
 package uat.repositories.implementations;
 
 import java.math.BigDecimal;
+import java.sql.SQLXML;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import uat.repositories.interfaces.IQueryable;
+import uat.filters.XwyyOrderFilter;
 import uat.models.XwyyOrder;
 import uat.repositories.interfaces.IXwyyOrderRepository;
 
@@ -177,6 +179,52 @@ public class XwyyOrderRepository implements IXwyyOrderRepository {
             return result > 0 ? result : -1; // Return the result if successful, otherwise return -1
         } catch (Exception e) {
             throw new Exception("Error deleting record from XwyyOrder table", e);
+        }
+    }
+
+    /**    (non-Javadoc)
+     * <br><br>
+     * <b>Description: </b> This method is used to retrieve records from the X
+     * wyyOrder table based on the provided filter criteria.
+     * <br><br>
+     * @param filter The filter criteria for retrieving records.
+     * @return A list of XwyyOrder records that match the filter criteria.
+     * @throws Exception If an error occurs during the retrieval process.
+     * <br><br>
+     * @see uat.repositories.interfaces.IXwyyOrderRepository#getRecordsByFilter(uat.filters.XwyyOrderFilter)
+     */
+    @Override
+    public List<XwyyOrder> getRecordsByFilter(XwyyOrderFilter filter) throws Exception {
+        // TODO Auto-generated method stub
+        try(IQueryable queryable = new Queryable()) {
+            List<XwyyOrder> records = new ArrayList<>();
+            String sql = "{call MESUAT.SP_XWYYORDER_FILTER(?, ?)}";
+
+            SQLXML filterXml = queryable.createSQLXML();
+            filterXml.setString(filter.toXmlString());
+
+            queryable.executeProcedureCursor(sql, rs -> {
+                while (rs.next()) {
+                    XwyyOrder order = new XwyyOrder();
+                    order.setId(new BigDecimal(rs.getInt("Id")));
+                    order.setLineNo(rs.getString("LineNo"));
+                    order.setRecipeName(rs.getString("RecipeName"));
+                    order.setRecipeType(rs.getString("RecipeType"));
+                    order.setRecipeVersion(rs.getString("RecipeVersion"));
+                    order.setmSetCount(rs.getBigDecimal("MSetCount"));
+                    order.setmLotNo(rs.getString("MLotNo"));
+                    order.setChangeTime(rs.getString("ChangeTime"));
+                    order.setIsRead(rs.getBigDecimal("IsRead"));
+                    order.setMesOrder(rs.getString("MesOrder"));
+                    order.setSimpleCode(rs.getString("SimpleCode"));
+                    records.add(order);
+                }
+                return null;
+            }, filterXml);
+
+            return records;
+        } catch (Exception e) {
+            throw new Exception("Error filtering records from XwyyOrder table", e);
         }
     }
 }
