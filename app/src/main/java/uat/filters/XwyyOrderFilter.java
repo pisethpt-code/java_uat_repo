@@ -13,8 +13,8 @@ public class XwyyOrderFilter {
     private String recipeVersion;
     private BigDecimal mSetCount;
     private String mLotNo;
-    private String changeTime; // date only e.g. 2023-08-15
-    private String readTime; // date only e.g. 2023-08-15
+    private String changeTime; // date only e.g. 2026-08-08
+    private String readTime; // date only e.g. 2026-08-08
     private BigDecimal isRead;
     private String mesOrder;
     private String simplecode;
