@@ -6,7 +6,7 @@ public class XwyyOutput {
     private BigDecimal Id;
     private String LineNo;
     private String RecipeName;
-    private String RecipeType;
+    private String RecipeVersion;
     private BigDecimal Qty;
     private String ProductTime;
     private BigDecimal IsRead;
@@ -32,11 +32,11 @@ public class XwyyOutput {
     public void setRecipeName(String recipeName) {
         RecipeName = recipeName;
     }
-    public String getRecipeType() {
-        return RecipeType;
+    public String getRecipeVersion() {
+        return RecipeVersion;
     }
-    public void setRecipeType(String recipeType) {
-        RecipeType = recipeType;
+    public void setRecipeVersion(String recipeType) {
+        RecipeVersion = recipeType;
     }
     public BigDecimal getQty() {
         return Qty;

@@ -67,7 +67,7 @@ public class XwyyOrderController {
         } catch (Exception e) {
             String errorMessage = "Error retrieving record from XwyyOrder table (method: getRecordById) ID: " + id;
             response = new Response(false, errorMessage + ": " + e.getMessage(), null);
-            throw new Exception(errorMessage, e);
+            // throw new Exception(errorMessage, e);
         }
         return response;
     }
@@ -98,7 +98,7 @@ public class XwyyOrderController {
         } catch (Exception e) {
             String errorMessage = "Error creating record in XwyyOrder table (method: createRecord) ";
             response = new Response(false, errorMessage + e.getMessage(), null);
-            throw new Exception(errorMessage, e);
+            // throw new Exception(errorMessage, e);
         }
         return response;
     }
@@ -129,7 +129,7 @@ public class XwyyOrderController {
         } catch (Exception e) {
             String errorMessage = "Error updating record in XwyyOrder table (method: updateRecord) ID: " + id;
             response = new Response(false, errorMessage + e.getMessage(), null);
-            throw new Exception(errorMessage, e);
+            // throw new Exception(errorMessage, e);
         }
         return response;
     }
@@ -185,7 +185,7 @@ public class XwyyOrderController {
         } catch (Exception e) {
             String errorMessage = "Error retrieving records from XwyyOrder table (method: getRecordsByFilter) ";
             response = new Response(false, errorMessage + e.getMessage(), null);
-            throw new Exception(errorMessage, e);
+            // throw new Exception(errorMessage, e);
         }
         return response;
     }

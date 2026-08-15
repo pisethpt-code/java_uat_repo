@@ -3,11 +3,14 @@ package uat.repositories.implementations;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import uat.models.XwyyOutput;
 import uat.repositories.interfaces.IQueryable;
 import uat.repositories.interfaces.IXwyyOutputRepository;
 import uat.response.SqlResponse;
 
+@Service
 public class XwyyOutputRepository implements IXwyyOutputRepository {
 
     @Override
@@ -18,12 +21,12 @@ public class XwyyOutputRepository implements IXwyyOutputRepository {
             String sql = "{call MESUAT.SP_XWYYOUTPUT_GETALLOUTPUT(?)}";
 
             queryable.executeProcedureCursor(sql, rs -> {
-                if (rs.next()) {
+                while (rs.next()) {
                     XwyyOutput record = new XwyyOutput();
                     record.setId(rs.getBigDecimal("Id"));
                     record.setLineNo(rs.getString("LineNo"));
                     record.setRecipeName(rs.getString("RecipeName"));
-                    record.setRecipeType(rs.getString("RecipeType"));
+                    record.setRecipeVersion(rs.getString("RecipeVersion"));
                     record.setQty(rs.getBigDecimal("Qty"));
                     record.setProductTime(rs.getString("ProductTime"));
                     record.setIsRead(rs.getBigDecimal("IsRead"));
@@ -50,7 +53,21 @@ public class XwyyOutputRepository implements IXwyyOutputRepository {
     @Override
     public SqlResponse createRecord(XwyyOutput model) throws Exception {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createRecord'");
+        try(IQueryable queryable = new Queryable()) {
+            String sql = "{call MESUAT.SP_XWYYOUTPUT_CREATEOUTPUT(?,?,?,?,?,?,?)}";
+            SqlResponse response = new SqlResponse();
+            queryable.executeProcedureCursor(sql, rs -> {
+                if (rs.next()) {
+                    response.setStatus(rs.getString("Status"));
+                    response.setMessage(rs.getString("Message"));
+                }
+                return null;
+            }, 
+            model.getLineNo(), model.getRecipeName(), model.getRecipeVersion(), model.getQty(), model.getOrderNo(), model.getSublotNo());
+            return response;
+        } catch (Exception e) {
+            throw new Exception("Error creating record in XwyyOutput table", e);
+        }
     }
 
     @Override
